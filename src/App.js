@@ -6,12 +6,15 @@ import axios from "axios";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 
+const SERVER_URL = 'http://localhost:8080/api/v1/';
+
 class App extends React.Component {
   defVal = "class Test {" + '\u000a' + " public static void main(String[] args) {" + '\u000a\u000a' + " }" + '\u000a' + "}";
 
   constructor(props) {
     super(props);
     this.state = { output: { success: "", error: "" }, input: this.defVal };
+    this.saveTmpCodeSchedule();
   }
 
   regPlus = new RegExp(/\+/g);
@@ -19,6 +22,16 @@ class App extends React.Component {
   onChange = (newValue) => {
     console.log(newValue);
     this.setState({ input: newValue });
+  }
+
+  saveTmpCodeSchedule() {
+    console.log('save tmp ' + this.state.input);
+    axios.post(SERVER_URL + 'save_tmp', {"code": this.state.input}, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    // setTimeout(this.saveTmpCodeSchedule(), 5000);
   }
 
   send = () => {
@@ -29,7 +42,7 @@ class App extends React.Component {
     this.setState({ output: { success: "compiling...", error: "" }, input: this.state.input });
 
     axios
-      .post('http://localhost:8080/api/v1', { "code": this.state.input.replace(this.regPlus, "&plus;") }, {
+      .post(SERVER_URL + 'run', { "code": this.state.input.replace(this.regPlus, "&plus;") }, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -46,13 +59,12 @@ class App extends React.Component {
 
   // Render editor
   render() {
-    console.log(this.state);
     return (
       <div className="container-fluid">
         <h2>Live code interview</h2>
         <div className="row">
           <div className="col-md-6 wrap-border">
-            Please do not change the class name, otherwise it doesn't work. Good luck!
+            For DB usage please use this parameters <b>Driver</b> <code>org.h2.Driver</code> <b>DB URL</b><code>jdbc:h2:~/test</code>
         <AceEditor
               width="100%"
               mode="java"
