@@ -20,18 +20,17 @@ class App extends React.Component {
   regPlus = new RegExp(/\+/g);
 
   onChange = (newValue) => {
-    console.log(newValue);
     this.setState({ input: newValue });
   }
 
-  saveTmpCodeSchedule() {
+  saveTmpCodeSchedule = () => {
     console.log('save tmp ' + this.state.input);
     axios.post(SERVER_URL + 'save_tmp', {"code": this.state.input}, {
       headers: {
         'Content-Type': 'application/json',
       }
     });
-    // setTimeout(this.saveTmpCodeSchedule(), 5000);
+    setTimeout(this.saveTmpCodeSchedule, 5000);
   }
 
   send = () => {
