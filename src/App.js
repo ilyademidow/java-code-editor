@@ -2,12 +2,14 @@ import React from 'react';
 import { render } from "react-dom";
 import AceEditor from "react-ace";
 import axios from "axios";
+import md5 from "md5";
 
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 
-const SERVER_URL = 'http://localhost:8080/api/v1/';
+const SERVER_URL = 'http://localhost:7171/api/v1/';
 const TMP_SAVE_CODE_INTERVAL = 5000;
+const DELAY = 3000;
 
 class App extends React.Component {
   tmpUsername = "";
@@ -54,14 +56,20 @@ class App extends React.Component {
           'Content-Type': 'application/json',
         }
       })
-      .then(resp => {
-        console.log(resp);
-        this.setState({ output: resp.data, input: this.state.input });
-      })
-      .catch(resp => {
-        console.log(resp);
-        this.setState({ output: resp.data, input: this.state.input });
-      });
+      .then(setTimeout(this.checkResult, DELAY));
+  }
+
+  checkResult = () => {
+    axios
+    .get(SERVER_URL + 'get_result/' + md5(this.state.username))
+    .then(resp => {
+      console.log(resp);
+      this.setState({ output: resp.data, input: this.state.input });
+    })
+    .catch(resp => {
+      console.log(resp);
+      this.setState({ output: resp.data, input: this.state.input });
+    });
   }
 
   updateTmpUsername = (event) => {
