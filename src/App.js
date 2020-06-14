@@ -9,7 +9,7 @@ import "ace-builds/src-noconflict/theme-github";
 
 const SERVER_URL = 'http://localhost:7171/api/v1/';
 const TMP_SAVE_CODE_INTERVAL = 5000;
-const DELAY = 3000;
+const DELAY = 1500;
 
 class App extends React.Component {
   tmpUsername = "";
@@ -61,15 +61,15 @@ class App extends React.Component {
 
   checkResult = () => {
     axios
-    .get(SERVER_URL + 'get_result/' + md5(this.state.username))
-    .then(resp => {
-      console.log(resp);
-      this.setState({ output: resp.data, input: this.state.input });
-    })
-    .catch(resp => {
-      console.log(resp);
-      this.setState({ output: resp.data, input: this.state.input });
-    });
+      .get(SERVER_URL + 'get_result/' + md5(this.state.username))
+      .then(resp => {
+        console.log(resp);
+        this.setState({ output: resp.data, input: this.state.input });
+      })
+      .catch(resp => {
+        console.log(resp);
+        this.setState({ output: resp.data, input: this.state.input });
+      });
   }
 
   updateTmpUsername = (event) => {
@@ -88,18 +88,28 @@ class App extends React.Component {
     if ("" === this.state.username) {
       return (
         <div className="container-fluid">
-          <div className="col-md-6">
-            <input type="text" id="username" onChange={this.updateTmpUsername} value={this.state.tmpUsername} />
+          <div className="row justify-content-md-center">
+            <div className="col-md-auto">
+              <h1>Welcome to free IDE with Java compiler!</h1>
+              <p>You are gonna write a code. But we need to know your nickname just to separate your code to others</p>
+            </div>
           </div>
-          <div className="col-md-6">
-            <button className="btn btn-danger" onClick={this.setUsername}>Confirm and run editor</button>
+          <div className="row justify-content-md-center">
+            <div className="col-md-auto">
+              <input type="text" id="username" onChange={this.updateTmpUsername} 
+              value={this.state.tmpUsername} placeholder="Enter here your nickname"/>
+            </div>
           </div>
-        </div>
+          <div className="row justify-content-md-center">
+            <div className="col-md-auto">
+              <button className="btn btn-primary" onClick={this.setUsername}>Confirm and run editor</button>
+            </div>
+          </div>
+        </div >
       )
     } else {
       return (
         <div className="container-fluid">
-          <h2>Live code interview</h2>
           <div className="row">
             <div className="col-md-6 wrap-border">
               For DB usage please use this parameters <b>Driver</b> <code>org.h2.Driver</code> <b>DB URL</b><code>jdbc:h2:~/test</code>
@@ -124,7 +134,7 @@ class App extends React.Component {
               </pre>
             </div>
           </div>
-          <button className="btn btn-danger" onClick={this.send}>Run my code</button>
+          <button className="btn btn-primary" onClick={this.send}>Run my code</button>
         </div>
       );
     }
