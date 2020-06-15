@@ -6,7 +6,10 @@ import md5 from "md5";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 
-const SERVER_URL = 'http://localhost:7171/api/v1/';
+// Test
+// const SERVER_URL = 'http://localhost:7171/api/v1/';
+// Prod
+const SERVER_URL = '/api/v1/';
 const TMP_SAVE_CODE_INTERVAL = 5000;
 const DELAY = 1500;
 
