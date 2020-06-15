@@ -1,0 +1,10 @@
+build site:
+  image: node:12
+  stage: build
+  script:
+    - npm install --progress=false
+    - npm run build --prod
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - build
