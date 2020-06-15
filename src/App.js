@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from "react-dom";
 import AceEditor from "react-ace";
 import axios from "axios";
 import md5 from "md5";
@@ -13,7 +12,7 @@ const DELAY = 1500;
 
 class App extends React.Component {
   tmpUsername = "";
-  defVal = "class Test {" + '\u000a' + " public static void main(String[] args) {" + '\u000a\u000a' + " }" + '\u000a' + "}";
+  defVal = 'class Test {\u000a public static void main(String[] args) { \u000a\u000a }\u000a}';
 
   constructor(props) {
     super(props);
@@ -37,7 +36,7 @@ class App extends React.Component {
 
   saveTmpCodeSchedule = () => {
     console.log('save tmp ' + this.state.input);
-    if ("" != this.state.username) {
+    if ("" !== this.state.username) {
       axios.post(SERVER_URL + 'save_tmp', { "username": this.state.username, "code": this.state.input }, {
         headers: {
           'Content-Type': 'application/json',
