@@ -13,8 +13,11 @@ const SERVER_URL = '/api/v1/';
 const TMP_SAVE_CODE_INTERVAL = 5000;
 const DELAY = 1500;
 
+const SERVICE_UNAVLBL_TEXT = "Sorry, service is unavailable. We are fixing it. Please try again later";
+
 class App extends React.Component {
   tmpUsername = "";
+  checkResultSchedule = true;
   defVal = 'class Test {\u000a public static void main(String[] args) { \u000a\u000a }\u000a}';
 
   constructor(props) {
@@ -44,9 +47,15 @@ class App extends React.Component {
         headers: {
           'Content-Type': 'application/json',
         }
+      }).catch(event => {
+        this.setState({ output: { sucess: "", error: SERVICE_UNAVLBL_TEXT } });
+        this.checkResultSchedule = false;
       });
     }
-    setTimeout(this.saveTmpCodeSchedule, TMP_SAVE_CODE_INTERVAL);
+    if (this.checkResultSchedule) {
+      console.log(this.checkResultSchedule);
+      setTimeout(this.saveTmpCodeSchedule, TMP_SAVE_CODE_INTERVAL);
+    }
   }
 
   send = () => {
@@ -70,7 +79,11 @@ class App extends React.Component {
       })
       .catch(resp => {
         console.log(resp);
-        this.setState({ output: resp.data, input: this.state.input });
+        if (resp.data !== undefined) {
+          this.setState({ output: resp.data, input: this.state.input });
+        } else {
+          this.setState({ output: { sucess: "", error: SERVICE_UNAVLBL_TEXT } });
+        }
       });
   }
 
@@ -93,13 +106,13 @@ class App extends React.Component {
           <div className="row justify-content-md-center">
             <div className="col-md-auto">
               <h1>Welcome to free IDE with Java compiler!</h1>
-              <p>You are gonna write a code. But we need to know your nickname just to separate your code to others</p>
+              <p>We need to know your nickname just to separate your code to others</p>
             </div>
           </div>
           <div className="row justify-content-md-center">
             <div className="col-md-auto">
-              <input type="text" id="username" onChange={this.updateTmpUsername} 
-              value={this.state.tmpUsername} placeholder="Enter here your nickname"/>
+              <input type="text" id="username" onChange={this.updateTmpUsername}
+                value={this.state.tmpUsername} placeholder="Enter here your nickname" />
             </div>
           </div>
           <div className="row justify-content-md-center">
