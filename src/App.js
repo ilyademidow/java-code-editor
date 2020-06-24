@@ -12,6 +12,7 @@ import "ace-builds/src-noconflict/theme-github";
 const SERVER_URL = '/api/v1/';
 const TMP_SAVE_CODE_INTERVAL = 5000;
 const DELAY = 1500;
+const DEMO_API_KEY = "demo";
 
 const SERVICE_UNAVLBL_TEXT = "Sorry, service is unavailable. We are fixing it. Please try again later";
 
@@ -43,7 +44,7 @@ class App extends React.Component {
   saveTmpCodeSchedule = () => {
     console.log('save tmp ' + this.state.input);
     if ("" !== this.state.username) {
-      axios.post(SERVER_URL + 'save_tmp', { "username": this.state.username, "code": this.state.input }, {
+      axios.post(SERVER_URL + 'save_tmp', { "username": this.state.username, "code": this.state.input, "apiKey": DEMO_API_KEY }, {
         headers: {
           'Content-Type': 'application/json',
         }
@@ -62,7 +63,7 @@ class App extends React.Component {
     this.setState({ output: { success: "compiling...", error: "" }, input: this.state.input });
 
     axios
-      .post(SERVER_URL + 'run', { "username": this.state.username, "code": this.state.input.replace(this.regPlus, "&plus;") }, {
+      .post(SERVER_URL + 'run', { "username": this.state.username, "code": this.state.input.replace(this.regPlus, "&plus;"), "apiKey": DEMO_API_KEY }, {
         headers: {
           'Content-Type': 'application/json',
         }
