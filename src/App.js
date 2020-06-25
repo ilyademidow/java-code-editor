@@ -7,11 +7,11 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 
 // Test
-// const SERVER_URL = 'http://localhost:7171/api/v1/';
+const SERVER_URL = 'http://idemidov.ru:7171/api/v1/';
 // Prod
-const SERVER_URL = '/api/v1/';
+// const SERVER_URL = '/api/v1/';
 const TMP_SAVE_CODE_INTERVAL = 5000;
-const DELAY = 1500;
+const DELAY = 6000;
 const DEMO_API_KEY = "demo";
 
 const SERVICE_UNAVLBL_TEXT = "Sorry, service is unavailable. We are fixing it. Please try again later";
@@ -48,9 +48,17 @@ class App extends React.Component {
         headers: {
           'Content-Type': 'application/json',
         }
-      }).catch(event => {
-        this.setState({ output: { sucess: "", error: SERVICE_UNAVLBL_TEXT } });
-        this.checkResultSchedule = false;
+      })
+      .then(resp => {
+        this.setState({ output: { sucess: "", error: "" } });
+      })
+      .catch(error => {
+        if (error.response !== undefined) {
+          this.setState({ output: error.response.data });
+        } else {
+          this.setState({ output: { sucess: "", error: SERVICE_UNAVLBL_TEXT } });
+          this.checkResultSchedule = false;
+        }
       });
     }
     if (this.checkResultSchedule) {
@@ -68,7 +76,15 @@ class App extends React.Component {
           'Content-Type': 'application/json',
         }
       })
-      .then(setTimeout(this.checkResult, DELAY));
+      .then(setTimeout(this.checkResult, DELAY))
+      .catch(error => {
+        if (error.response !== undefined) {
+          this.setState({ output: error.response.data });
+        } else {
+          this.setState({ output: { sucess: "", error: SERVICE_UNAVLBL_TEXT } });
+          this.checkResultSchedule = false;
+        }
+      });
   }
 
   checkResult = () => {
@@ -78,10 +94,9 @@ class App extends React.Component {
         console.log(resp);
         this.setState({ output: resp.data, input: this.state.input });
       })
-      .catch(resp => {
-        console.log(resp);
-        if (resp.data !== undefined) {
-          this.setState({ output: resp.data, input: this.state.input });
+      .catch(error => {
+        if (error.response !== undefined) {
+          this.setState({ output: error.response.data, input: this.state.input });
         } else {
           this.setState({ output: { sucess: "", error: SERVICE_UNAVLBL_TEXT } });
         }
@@ -106,7 +121,7 @@ class App extends React.Component {
         <div className="container-fluid">
           <div className="row justify-content-md-center">
             <div className="col-md-auto">
-              <h1>Welcome to free IDE with Java compiler!</h1>
+              <h1><span role="img" aria-label="developer">👨‍💻</span> Welcome to free online OpenJDK 11!</h1>
               <p>We need to know your nickname just to separate your code to others</p>
             </div>
           </div>
@@ -118,7 +133,7 @@ class App extends React.Component {
           </div>
           <div className="row justify-content-md-center">
             <div className="col-md-auto">
-              <button className="btn btn-primary" onClick={this.setUsername}>Confirm and run editor</button>
+              <button className="btn btn-primary" onClick={this.setUsername}>Confirm and open the editor</button>
             </div>
           </div>
         </div >
@@ -128,6 +143,7 @@ class App extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-6 wrap-border">
+              <small><span role="img" aria-label="atention">⚠️</span> For some circumstances we don't accept code longer than 3096 symbols</small>
               For DB usage please use this parameters <b>Driver</b> <code>org.h2.Driver</code> <b>DB URL</b><code>jdbc:h2:~/test</code>
               <AceEditor
                 width="100%"
@@ -141,6 +157,7 @@ class App extends React.Component {
                 name="UNIQUE_ID_OF_DIV"
                 editorProps={{ $blockScrolling: true }}
               />
+              <small>written {this.state.input.length} symbols</small>
             </div>
             <div className="col-md-6 wrap-border">
               Output:<br />

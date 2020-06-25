@@ -4,6 +4,14 @@ build site:
   script:
     - npm install --progress=false
     - npm run build --prod
+    - mkdir ~/.ssh
+    - chmod 700 ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - ssh-keyscan -t rsa idemidov.ru >> ~/.ssh/known_hosts
+    - scp build admin@idemidov.ru:/home/admin/Projects/web-ide-project/
+    - ssh admin@idemidov.ru "echo $ACCEPT_KEY | sudo -S docker restart my-nginx"
+
   artifacts:
     expire_in: 1 week
     paths:
