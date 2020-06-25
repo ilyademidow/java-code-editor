@@ -1,5 +1,5 @@
 build site:
-  image: node:12
+  image: node:12.18.0-stretch
   stage: build
   script:
     - npm install --progress=false
