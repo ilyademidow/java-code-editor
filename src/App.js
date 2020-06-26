@@ -49,14 +49,8 @@ class App extends React.Component {
           'Content-Type': 'application/json',
         }
       })
-      .then(resp => {
-        this.setState({ output: { sucess: "", error: "" } });
-      })
       .catch(error => {
-        if (error.response !== undefined) {
-          this.setState({ output: error.response.data });
-        } else {
-          this.setState({ output: { sucess: "", error: SERVICE_UNAVLBL_TEXT } });
+        if (error.response === undefined) {
           this.checkResultSchedule = false;
         }
       });
