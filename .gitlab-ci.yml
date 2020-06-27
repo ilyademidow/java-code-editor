@@ -9,8 +9,9 @@ build site:
     - eval $(ssh-agent -s)
     - echo "$GITLAB_WEB_IDE_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - ssh-keyscan -t rsa idemidov.ru >> ~/.ssh/known_hosts
-    - scp build admin@idemidov.ru:/home/admin/Projects/web-ide-project/build
-    - ssh admin@idemidov.ru "echo $ACCEPT_KEY | sudo -S docker restart my-nginx"
+    - zip -r build.zip build
+    - scp build.zip admin@idemidov.ru:/home/admin/Projects/web-ide-project
+    - ssh admin@idemidov.ru "rm -rf /home/admin/Projects/web-ide-project/build | unzip /home/admin/Projects/web-ide-project/build.zip -d /home/admin/Projects/web-ide-project/build | echo $ACCEPT_KEY | sudo -S docker restart my-nginx"
   artifacts:
     expire_in: 1 week
     paths:
