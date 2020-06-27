@@ -11,7 +11,7 @@ build site:
     - ssh-keyscan -t rsa idemidov.ru >> ~/.ssh/known_hosts
     - tar -zcvf build.tar.gz build
     - scp build.tar.gz admin@idemidov.ru:/home/admin/Projects/web-ide-project
-    - ssh admin@idemidov.ru "rm -rf /home/admin/Projects/web-ide-project/build | tar -zxvf /home/admin/Projects/web-ide-project/build.tar.gz | rm /home/admin/Projects/web-ide-project/build.tar.gz"
+    - ssh admin@idemidov.ru "rm -rf /home/admin/Projects/web-ide-project/build | tar -C /home/admin/Projects/web-ide-project -xvf /home/admin/Projects/web-ide-project/build.tar.gz | rm /home/admin/Projects/web-ide-project/build.tar.gz"
     - ssh admin@idemidov.ru "echo $ACCEPT_KEY | sudo -S docker restart my-nginx"
   artifacts:
     expire_in: 1 week
