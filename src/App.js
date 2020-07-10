@@ -20,6 +20,7 @@ class App extends React.Component {
   tmpUsername = "";
   checkResultSchedule = true;
   defVal = 'class Test {\u000a public static void main(String[] args) { \u000a\u000a }\u000a}';
+  newHeight = "700px";
 
   constructor(props) {
     super(props);
@@ -33,6 +34,16 @@ class App extends React.Component {
       input: this.defVal
     };
     this.saveTmpCodeSchedule();
+  }
+
+  componentDidMount = () => {
+    if (window.innerHeight > 700) {
+      this.newHeight = `${window.innerHeight - 164}px`;
+    } else if (window.innerHeight > 350) {
+      this.newHeight = `${window.innerHeight - 284}px`;
+    } else {
+      this.newHeight = "128px";
+    }
   }
 
   regPlus = new RegExp(/\+/g);
@@ -49,11 +60,11 @@ class App extends React.Component {
           'Content-Type': 'application/json',
         }
       })
-      .catch(error => {
-        if (error.response === undefined) {
-          this.checkResultSchedule = false;
-        }
-      });
+        .catch(error => {
+          if (error.response === undefined) {
+            this.checkResultSchedule = false;
+          }
+        });
     }
     if (this.checkResultSchedule) {
       console.log(this.checkResultSchedule);
@@ -138,9 +149,10 @@ class App extends React.Component {
           <div className="row">
             <div className="col-md-6 wrap-border">
               <small><span role="img" aria-label="atention">⚠️</span> For some circumstances we don't accept code longer than 3096 symbols</small>
-              For DB usage please use this parameters <b>Driver</b> <code>org.h2.Driver</code> <b>DB URL</b><code>jdbc:h2:~/test</code>
+              <p>For DB usage please use this parameters <b>Driver</b> <code>org.h2.Driver</code> <b>DB URL</b><code>jdbc:h2:~/test</code></p>
               <AceEditor
                 width="100%"
+                height={this.newHeight}
                 mode="java"
                 theme="github"
                 fontSize="16px"
