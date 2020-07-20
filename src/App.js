@@ -37,10 +37,11 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
-    if (window.innerHeight > 700) {
-      this.newHeight = `${window.innerHeight - 164}px`;
-    } else if (window.innerHeight > 350) {
-      this.newHeight = `${window.innerHeight - 284}px`;
+    console.log(window.outerHeight);
+    if (window.outerHeight > 700) {
+      this.newHeight = `${window.outerHeight - 164}px`;
+    } else if (window.outerHeight > 350) {
+      this.newHeight = `${window.outerHeight - 284}px`;
     } else {
       this.newHeight = "128px";
     }
@@ -139,6 +140,13 @@ class App extends React.Component {
           <div className="row justify-content-md-center">
             <div className="col-md-auto">
               <button className="btn btn-primary" onClick={this.setUsername}>Confirm and open the editor</button>
+            </div>
+          </div>
+          <div className="row justify-content-md-center">
+            <div className="col-md-3">
+              <small>
+                Pressing "Confirm and open the editor" button you accept our <a href="terms_and_conds.html">terms and conditions</a>.
+              </small>
             </div>
           </div>
         </div >

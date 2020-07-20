@@ -18,6 +18,14 @@ code {
   border: 1px solid #CCC;
 }
 
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
 button {
   margin: 8px 0;
 }
