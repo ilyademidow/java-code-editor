@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
-  Route,
   Link
 } from "react-router-dom";
 import AceEditor from "react-ace";
@@ -10,7 +8,6 @@ import md5 from "md5";
 
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
-import Terms from './Terms';
 
 // Test
 // const SERVER_URL = 'http://localhost:7171/api/v1/';
