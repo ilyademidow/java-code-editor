@@ -1,10 +1,16 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from "react-router-dom";
 import AceEditor from "react-ace";
 import axios from "axios";
 import md5 from "md5";
 
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
+import Terms from './Terms';
 
 // Test
 // const SERVER_URL = 'http://localhost:7171/api/v1/';
@@ -145,7 +151,7 @@ class App extends React.Component {
           <div className="row justify-content-md-center">
             <div className="col-md-3">
               <small>
-                Pressing "Confirm and open the editor" button you accept our <a href="terms_and_conds.html">terms and conditions</a>.
+                Pressing "Confirm and open the editor" button you accept our <Link to="/terms_and_conditions">terms and conditions</Link>.            
               </small>
             </div>
           </div>
