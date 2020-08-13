@@ -23,7 +23,7 @@ class App extends React.Component {
   tmpUsername = "";
   checkResultSchedule = true;
   defVal = 'class Test {\u000a public static void main(String[] args) { \u000a\u000a }\u000a}';
-  newHeight = "700px";
+  newEditorHeight = "700px";
 
   constructor(props) {
     super(props);
@@ -40,14 +40,7 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log(window.outerHeight);
-    if (window.outerHeight > 700) {
-      this.newHeight = `${window.outerHeight - 164}px`;
-    } else if (window.outerHeight > 350) {
-      this.newHeight = `${window.outerHeight - 284}px`;
-    } else {
-      this.newHeight = "128px";
-    }
+    this.fitEditor();
   }
 
   regPlus = new RegExp(/\+/g);
@@ -123,6 +116,39 @@ class App extends React.Component {
     console.log(this.state.username);
   }
 
+  /**
+   * Set proper editor height by guessing windows size and device type
+   */
+  fitEditor = () => {
+    // // mobile portrait
+    // if (window.innerWidth < 450) {
+    //   this.newEditorHeight = `${window.outerHeight - 136}px`;
+    // } 
+    // // mobile landscape
+    // else if (window.outerHeight <= 450) {
+    //   this.newEditorHeight = `${window.outerHeight - 91}px`;
+    // } 
+    // horizontal layout and few rows description
+    if (window.innerWidth <= 767) {
+      this.newEditorHeight = `${window.outerHeight - (-1 * (window.innerWidth - 767) / 10 + 109)}px`;
+    }
+    // horizontal layout and few rows description
+    else if (window.innerWidth < 1360) {
+      if (window.outerHeight < 450) {
+        this.newEditorHeight = `${window.outerHeight - (-1 * (window.innerWidth - 1360) / 10 + 91)}px`;
+      } else {
+        this.newEditorHeight = `${window.outerHeight - (-1 * (window.innerWidth - 1360) / 10 + 244)}px`;
+      }
+    }
+    // single row description
+    else if (window.innerWidth >= 1360) {
+      this.newEditorHeight = `${window.outerHeight - 244}px`;
+    } else {
+      this.newEditorHeight = "128px";
+    }
+    console.log(this.newEditorHeight);
+  }
+
   // Render editor
   render() {
     if ("" === this.state.username) {
@@ -148,7 +174,7 @@ class App extends React.Component {
           <div className="row justify-content-md-center">
             <div className="col-md-3">
               <small>
-                Pressing "Confirm and open the editor" button you accept our <Link to="/terms_and_conditions">terms and conditions</Link>.            
+                Pressing "Confirm and open the editor" button you accept our <Link to="/terms_and_conditions">terms and conditions</Link>.
               </small>
             </div>
           </div>
@@ -163,7 +189,7 @@ class App extends React.Component {
               <p>For DB usage please use this parameters <b>Driver</b> <code>org.h2.Driver</code> <b>DB URL</b><code>jdbc:h2:~/test</code></p>
               <AceEditor
                 width="100%"
-                height={this.newHeight}
+                height={this.newEditorHeight}
                 mode="java"
                 theme="github"
                 fontSize="16px"
